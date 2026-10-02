@@ -3,7 +3,7 @@ name: Deploy landing pages a GitHub Pages
 on:
   push:
     branches: [main]
-    paths: ['landing-pages/**', '.github/workflows/deploy-landing-pages.yml']
+    paths: ['voluntarios.html', 'pedir-ayuda.html', '.github/workflows/deploy-lp.yml']
   workflow_dispatch:
 
 permissions:
@@ -26,10 +26,15 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload artefacto (solo landing-pages)
+      - name: Preparar artefacto
+        run: |
+          mkdir -p _site
+          cp voluntarios.html pedir-ayuda.html README.md _site/
+          touch _site/.nojekyll
+      - name: Upload artefacto
         uses: actions/upload-pages-artifact@v3
         with:
-          path: landing-pages
+          path: _site
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
